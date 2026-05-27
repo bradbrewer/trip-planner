@@ -1196,12 +1196,6 @@
 
   updateNavDots();
 
-  // Auto-open attention panel on load if there are unconfirmed items
-  if (document.querySelectorAll('.event.unconfirmed').length > 0) {
-    updateAttnPanel();
-    attnOverlay.classList.add('open');
-  }
-
   // ---- "Now" line ----
   function placeNowMarker(scroll) {
     document.querySelectorAll('.now-marker').forEach(m => m.remove());
@@ -1278,8 +1272,14 @@
     }
   }
 
-  placeNowMarker(true);
-  checkUberAlert();
+  window.addEventListener('load', () => {
+    placeNowMarker(true);
+    checkUberAlert();
+    if (document.querySelectorAll('.event.unconfirmed').length > 0) {
+      updateAttnPanel();
+      attnOverlay.classList.add('open');
+    }
+  });
   setInterval(() => { if (!testDayId) { placeNowMarker(false); checkUberAlert(); } }, 60000);
 
   // Highlight active day nav pill on scroll
