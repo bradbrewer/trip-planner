@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chicago Trip — May 29 – Jun 2</title>
+<style>
+  :root {
+    --bg: #faf9f7;
+    --card: #ffffff;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --food: #ea580c;
+    --food-light: #fff7ed;
+    --museum: #7c3aed;
+    --museum-light: #f5f3ff;
+    --downtime: #059669;
+    --downtime-light: #ecfdf5;
+    --optional: #64748b;
+    --optional-light: #f8fafc;
+    --travel: #0891b2;
+    --travel-light: #ecfeff;
+    --split: #db2777;
+    --split-light: #fdf2f8;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    color: white;
+    padding: 2.5rem 1.25rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 24px;
+    background: var(--bg);
+    border-radius: 24px 24px 0 0;
+  }
+  .hero h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -.02em; }
+  .hero .subtitle {
+    font-size: .95rem;
+    opacity: .85;
+    margin-top: .35rem;
+    font-weight: 400;
+  }
+  .hero .dates {
+    display: inline-block;
+    margin-top: .75rem;
+    background: rgba(255,255,255,.18);
+    padding: .3rem .9rem;
+    border-radius: 20px;
+    font-size: .85rem;
+    font-weight: 500;
+  }
+
+  .container { max-width: 600px; margin: 0 auto; padding: 0 1rem; }
+
+  /* Day nav pills */
+  .day-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    padding: .75rem 0 .5rem;
+    display: flex;
+    gap: .5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .day-nav::-webkit-scrollbar { display: none; }
+  .day-nav a {
+    flex-shrink: 0;
+    text-decoration: none;
+    padding: .4rem .85rem;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 600;
+    background: var(--card);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .day-nav a:hover, .day-nav a.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* Day section */
+  .day {
+    margin-top: 1.75rem;
+    scroll-margin-top: 4rem;
+  }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1rem;
+    padding: 0 .25rem;
+  }
+  .day-date {
+    width: 52px; height: 52px;
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 1.1;
+  }
+  .day-date .dow { font-size: .65rem; font-weight: 600; text-transform: uppercase; opacity: .85; }
+  .day-date .num { font-size: 1.3rem; font-weight: 700; }
+  .day-title { font-size: 1.1rem; font-weight: 700; }
+  .day-theme { font-size: .8rem; color: var(--text-muted); }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+    border-radius: 1px;
+  }
+
+  /* Event card */
+  .event {
+    position: relative;
+    margin-bottom: 1rem;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--border);
+    overflow: hidden;
+  }
+  .event::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 16px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 2px solid var(--bg);
+  }
+
+  .event.food    { border-left-color: var(--food); }
+  .event.food::before    { background: var(--food); }
+  .event.museum  { border-left-color: var(--museum); }
+  .event.museum::before  { background: var(--museum); }
+  .event.downtime { border-left-color: var(--downtime); }
+  .event.downtime::before { background: var(--downtime); }
+  .event.optional { border-left-color: var(--optional); border-style: solid; border-left-style: dashed; }
+  .event.optional::before { background: var(--optional); }
+  .event.travel  { border-left-color: var(--travel); }
+  .event.travel::before  { background: var(--travel); }
+  .event.split   { border-left-color: var(--split); }
+  .event.split::before   { background: var(--split); }
+
+  .event-body { padding: .85rem 1rem; }
+
+  .event-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .5rem;
+  }
+  .event-time {
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .event-icon { margin-right: .4rem; }
+  .event-name {
+    font-size: .95rem;
+    font-weight: 650;
+  }
+  .event-location {
+    font-size: .78rem;
+    color: var(--text-muted);
+    margin-top: .15rem;
+  }
+  .event-desc {
+    font-size: .82rem;
+    color: var(--text);
+    margin-top: .45rem;
+    line-height: 1.55;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: .15rem .45rem;
+    border-radius: 6px;
+    margin-top: .4rem;
+    margin-right: .3rem;
+  }
+  .badge.confirmed { background: #dcfce7; color: #166534; }
+  .badge.citypass  { background: var(--accent-light); color: #1e40af; }
+  .badge.optional-badge  { background: #f1f5f9; color: #475569; }
+  .badge.split-badge     { background: var(--split-light); color: #9d174d; }
+
+  /* Tip/detail blocks */
+  .tip {
+    margin-top: .5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    font-size: .78rem;
+    color: var(--text-muted);
+    overflow: hidden;
+  }
+  .tip summary {
+    padding: .5rem .65rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-muted);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    user-select: none;
+  }
+  .tip summary::before { content: '💡'; font-size: .8rem; }
+  .tip summary::after {
+    content: '▸';
+    margin-left: auto;
+    transition: transform .2s;
+    font-size: .7rem;
+  }
+  .tip[open] summary::after { transform: rotate(90deg); }
+  .tip .tip-content {
+    padding: 0 .65rem .55rem;
+    line-height: 1.55;
+  }
+
+  /* Split group */
+  .split-group {
+    margin-top: .45rem;
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+  }
+  .split-card {
+    background: var(--split-light);
+    border-radius: 8px;
+    padding: .6rem .75rem;
+    font-size: .82rem;
+  }
+  .split-card .split-who {
+    font-weight: 700;
+    font-size: .75rem;
+    color: var(--split);
+    margin-bottom: .2rem;
+  }
+
+  /* Dinner options list */
+  .options-list {
+    margin-top: .35rem;
+    padding-left: 1.1rem;
+    font-size: .82rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .options-list li { margin-bottom: .2rem; }
+  .options-list strong { font-weight: 650; }
+
+  /* Now indicator line — overlays the active card */
+  .now-marker {
+    position: absolute;
+    left: -28px;
+    right: -4px;
+    display: flex;
+    align-items: center;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .now-marker .now-dot {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(239,68,68,.2);
+  }
+  .now-marker .now-line {
+    flex: 1;
+    height: 2px;
+    background: #ef4444;
+  }
+  .now-marker .now-label {
+    flex-shrink: 0;
+    font-size: .68rem;
+    font-weight: 700;
+    color: #ef4444;
+    margin-left: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    background: var(--card);
+    padding: 0 .3rem;
+  }
+
+  .event.now-active {
+    overflow: visible;
+    position: relative;
+  }
+
+  /* Dim past events */
+  .event.past-event {
+    opacity: .5;
+  }
+
+  /* Demo mode controls */
+  .demo-fab {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    font-size: 1.1rem;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s;
+  }
+  .demo-fab:hover { background: #1d4ed8; }
+  .demo-fab.active { background: #dc2626; }
+
+  .demo-panel {
+    display: none;
+    position: fixed;
+    bottom: 4.5rem;
+    right: 1rem;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    padding: .85rem 1rem;
+    z-index: 200;
+    width: 240px;
+  }
+  .demo-panel.open { display: block; }
+  .demo-panel label {
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: .3rem;
+  }
+  .demo-panel select,
+  .demo-panel input[type="range"] {
+    width: 100%;
+    margin-bottom: .6rem;
+    font-family: inherit;
+  }
+  .demo-panel select {
+    padding: .35rem .4rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: .82rem;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .demo-panel input[type="range"] {
+    accent-color: var(--accent);
+    height: 6px;
+  }
+  .demo-panel .demo-time-display {
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: .4rem;
+  }
+  .demo-panel .demo-off-btn {
+    display: block;
+    width: 100%;
+    padding: .35rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--text-muted);
+    font-size: .75rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+  .demo-panel .demo-off-btn:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: .75rem;
+    color: var(--text-muted);
+  }
+
+  /* Active day highlight via JS */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.45rem; }
+    .container { padding: 0 .75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Chicago Trip</h1>
+  <div class="subtitle">Iowa → Chicago &amp; back</div>
+  <div class="dates">May 29 – Jun 2, 2026</div>
+</div>
+
+<div class="container">
+
+  <nav class="day-nav" id="dayNav">
+    <a href="#fri">Fri 29</a>
+    <a href="#sat">Sat 30</a>
+    <a href="#sun">Sun 31</a>
+    <a href="#mon">Mon 1</a>
+    <a href="#tue">Tue 2</a>
+  </nav>
+
+  <!-- ================= FRIDAY ================= -->
+  <section class="day" id="fri">
+    <div class="day-header">
+      <div class="day-date"><span class="dow">Fri</span><span class="num">29</span></div>
+      <div><div class="day-title">Arrival + MSI</div><div class="day-theme">Museum of Science &amp; Industry day</div></div>
+    </div>
+    <div class="timeline">
+
+      <div class="event travel">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🚗</span><span class="event-name">Arrive &amp; Meet Mom</span></div>
+            <div class="event-time">Morning</div>
+          </div>
+          <div class="event-location">Drive or Uber to Hyde Park (25–40 min)</div>
+        </div>
+      </div>
+
+      <div class="event museum">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🏛️</span><span class="event-name">Museum of Science &amp; Industry</span></div>
+            <div class="event-time">~3.5–5 hrs</div>
+          </div>
+          <div class="event-location">Hyde Park</div>
+          <div class="event-desc">Focus on kid-friendly exhibits — U-505 submarine &amp; Idea Factory.</div>
+          <span class="badge citypass">CityPASS</span>
+          <details class="tip">
+            <summary>Tips</summary>
+            <div class="tip-content">Pre-buy tickets (covered by CityPASS). Budget 3.5–5 hours depending on energy levels.</div>
+          </details>
+        </div>
+      </div>
+
+      <div class="event downtime">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🛋️</span><span class="event-name">Check in &amp; Decompress</span></div>
+            <div class="event-time">Late afternoon</div>
+          </div>
+          <div class="event-location">West Loop VRBO</div>
+        </div>
+      </div>
+
+      <div class="event food">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🍕</span><span class="event-name">Parlor Pizza Bar</span></div>
+            <div class="event-time">6:00 pm</div>
+          </div>
+          <div class="event-location">West Loop — all together</div>
+          <div class="event-desc">Casual wood-fired pizza and bar food in a lively spot. Easy and relaxed for the group.</div>
+          <span class="badge optional-badge">Not Yet Confirmed</span>
+        </div>
+      </div>
+
+      <div class="event downtime">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">😌</span><span class="event-name">Evening Downtime</span></div>
+            <div class="event-time">After dinner</div>
+          </div>
+          <div class="event-desc">Built-in buffer to recharge after a travel + museum day.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SATURDAY ================= -->
+  <section class="day" id="sat">
+    <div class="day-header">
+      <div class="day-date"><span class="dow">Sat</span><span class="num">30</span></div>
+      <div><div class="day-title">Field Museum + Split Evening</div><div class="day-theme">Buffer day with intentional flexibility</div></div>
+    </div>
+    <div class="timeline">
+
+      <div class="event museum">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🦕</span><span class="event-name">Field Museum</span></div>
+            <div class="event-time">Morning</div>
+          </div>
+          <div class="event-location">Museum Campus — drive or Uber (20–30 min)</div>
+          <div class="event-desc">2.5–4 hours is ideal with a 7-year-old.</div>
+          <span class="badge citypass">CityPASS</span>
+        </div>
+      </div>
+
+      <div class="event optional">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">📸</span><span class="event-name">The Bean / Millennium Park</span></div>
+            <div class="event-time">Midday</div>
+          </div>
+          <div class="event-desc">Quick stop if energy is good — otherwise head straight back to West Loop for lunch and downtime.</div>
+          <span class="badge optional-badge">Optional</span>
+        </div>
+      </div>
+
+      <div class="event downtime">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🍦</span><span class="event-name">West Loop Wandering</span></div>
+            <div class="event-time">Afternoon</div>
+          </div>
+          <div class="event-location">Fulton Market / West Loop</div>
+          <div class="event-desc">Strolling, ice cream, intentional buffer time.</div>
+        </div>
+      </div>
+
+      <div class="event split">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">👨‍👧</span><span class="event-name">Evening — Split Plans</span></div>
+            <div class="event-time">5:15 – 5:30 pm</div>
+          </div>
+          <span class="badge split-badge">Split Evening</span>
+          <div class="split-group">
+            <div class="split-card">
+              <div class="split-who">Brad + Adelaide</div>
+              <strong>The Publican</strong> at 5:30 pm for 2 — high-quality, approachable food in a welcoming room. Movie after if timing works.
+              <br><span class="badge confirmed" style="margin-top:.3rem">Confirmed</span>
+            </div>
+            <div class="split-card">
+              <div class="split-who">Kelly + Sunny</div>
+              <strong>Seville</strong> at 5:15 pm — rooftop Mediterranean, nice for adults.<br>
+              Then <strong>theater</strong> at 7:30 pm + <strong>fireworks</strong> (likely Navy Pier / Grant Park area).
+            </div>
+          </div>
+          <details class="tip">
+            <summary>Travel tip</summary>
+            <div class="tip-content">Uber recommended for evenings and Museum Campus to avoid parking hassle.</div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SUNDAY ================= -->
+  <section class="day" id="sun">
+    <div class="day-header">
+      <div class="day-date"><span class="dow">Sun</span><span class="num">31</span></div>
+      <div><div class="day-title">Girl &amp; the Goat + Slow Day</div><div class="day-theme">Deliberate relaxation</div></div>
+    </div>
+    <div class="timeline">
+
+      <div class="event food">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🐐</span><span class="event-name">Girl &amp; the Goat</span></div>
+            <div class="event-time">11:30 am</div>
+          </div>
+          <div class="event-location">West Loop — party of 4</div>
+          <div class="event-desc">Excellent shareable plates and bold flavors in a lively but accommodating room.</div>
+          <span class="badge confirmed">Confirmed</span>
+        </div>
+      </div>
+
+      <div class="event downtime">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🚶</span><span class="event-name">Afternoon Wandering</span></div>
+            <div class="event-time">Afternoon</div>
+          </div>
+          <div class="event-location">West Loop / Fulton Market</div>
+          <div class="event-desc">Window shopping, ice cream, small sight-seeing. The Bean / Millennium Park if skipped Saturday.</div>
+        </div>
+      </div>
+
+      <div class="event optional">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🐠</span><span class="event-name">Shedd Aquarium</span></div>
+            <div class="event-time">Afternoon</div>
+          </div>
+          <div class="event-location">Adjacent to Field Museum — short Uber</div>
+          <div class="event-desc">Only if everyone still has strong energy.</div>
+          <span class="badge optional-badge">Optional</span>
+        </div>
+      </div>
+
+      <div class="event food">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🍽️</span><span class="event-name">Dinner — No Reservation</span></div>
+            <div class="event-time">Evening</div>
+          </div>
+          <div class="event-location">West Loop — all hyper-local or short Uber</div>
+          <div class="event-desc">Monitor Resy; aim early or late to minimize waits.</div>
+          <span class="badge optional-badge">Flexible</span>
+          <details class="tip">
+            <summary>Top picks</summary>
+            <div class="tip-content">
+              <ul class="options-list">
+                <li><strong>Momotaro</strong> — truly excellent sushi/Japanese, high-quality fish &amp; creative dishes</li>
+                <li><strong>Rose Mary, Aba, or Avec</strong> — check Resy for openings</li>
+                <li><strong>Green Street Smoked Meats</strong> — casual-quality BBQ</li>
+                <li><strong>Au Cheval</strong> — famous burgers</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MONDAY ================= -->
+  <section class="day" id="mon">
+    <div class="day-header">
+      <div class="day-date"><span class="dow">Mon</span><span class="num">1</span></div>
+      <div><div class="day-title">Children's Museum + Rose Mary</div><div class="day-theme">Navy Pier morning, West Loop evening</div></div>
+    </div>
+    <div class="timeline">
+
+      <div class="event museum">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🧒</span><span class="event-name">Chicago Children's Museum</span></div>
+            <div class="event-time">Morning</div>
+          </div>
+          <div class="event-location">Navy Pier — closes ~2 pm weekdays</div>
+          <div class="event-desc">Go early for 2–3 focused hours. Perfect interactive play for a 7-year-old. Less busy on weekdays.</div>
+          <details class="tip">
+            <summary>Tips</summary>
+            <div class="tip-content">Buy tickets direct in advance. Uber strongly recommended both ways — parking is expensive and crowded at Navy Pier.</div>
+          </details>
+        </div>
+      </div>
+
+      <div class="event downtime">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🛋️</span><span class="event-name">Lunch + Protected Downtime</span></div>
+            <div class="event-time">Early afternoon</div>
+          </div>
+          <div class="event-location">VRBO or light West Loop wandering</div>
+          <div class="event-desc">Recharge at the VRBO or stroll the neighborhood.</div>
+        </div>
+      </div>
+
+      <div class="event optional">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🏙️</span><span class="event-name">Willis Tower Skydeck</span></div>
+            <div class="event-time">Afternoon</div>
+          </div>
+          <div class="event-desc">Optional add if energy permits.</div>
+          <span class="badge optional-badge">Optional</span>
+          <span class="badge citypass">CityPASS</span>
+        </div>
+      </div>
+
+      <div class="event food">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🌹</span><span class="event-name">Rose Mary</span></div>
+            <div class="event-time">5:15 pm</div>
+          </div>
+          <div class="event-location">West Loop — party of 4</div>
+          <div class="event-desc">Vibrant Italian-Croatian cooking in a plant-filled, lively room. Works for a full family table or as a base for splitting the evening.</div>
+          <span class="badge confirmed">Confirmed</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= TUESDAY ================= -->
+  <section class="day" id="tue">
+    <div class="day-header">
+      <div class="day-date"><span class="dow">Tue</span><span class="num">2</span></div>
+      <div><div class="day-title">Boat Tour + Monteverde + Home</div><div class="day-theme">Grand finale &amp; departure</div></div>
+    </div>
+    <div class="timeline">
+
+      <div class="event museum">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🚢</span><span class="event-name">Architecture Boat Tour</span></div>
+            <div class="event-time">Early morning</div>
+          </div>
+          <div class="event-location">Chicago River — ~90 min cruise</div>
+          <div class="event-desc">Book in advance. Go early for best conditions and smaller groups. Stunning skyline views.</div>
+          <span class="badge citypass">CityPASS</span>
+        </div>
+      </div>
+
+      <div class="event travel">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">📦</span><span class="event-name">VRBO Checkout</span></div>
+            <div class="event-time">11:00 am</div>
+          </div>
+          <div class="event-desc">Load all luggage into the car immediately — you'll need it ready for the drive home after lunch.</div>
+        </div>
+      </div>
+
+      <div class="event downtime">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🚶</span><span class="event-name">West Loop Mini-Adventure</span></div>
+            <div class="event-time">11:15 am – 12:15 pm</div>
+          </div>
+          <div class="event-location">W Madison St → Fulton Market (1–2 blocks to Monteverde)</div>
+          <div class="event-desc">Walk along W Madison, browse boutiques, enjoy the industrial-to-chic vibe.</div>
+          <details class="tip">
+            <summary>Ideas for the window</summary>
+            <div class="tip-content">
+              <ul class="options-list">
+                <li><strong>Fulton Market stroll</strong> — interesting architecture, trendy vibe, people-watching, boutique browsing</li>
+                <li><strong>Mary Bartelme Park</strong> — nearby playground, safe &amp; family-friendly. Keep to 20–30 min max so you're not rushed</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="event food">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🍝</span><span class="event-name">Monteverde</span></div>
+            <div class="event-time">12:45 pm</div>
+          </div>
+          <div class="event-location">1020 W Madison — party of 4</div>
+          <div class="event-desc">Outstanding pasta-focused send-off in a lively, kid-accommodating room. Enjoy a relaxed lunch before the drive home.</div>
+          <span class="badge confirmed">Confirmed</span>
+          <details class="tip">
+            <summary>Parking tip</summary>
+            <div class="tip-content">Pre-book a paid garage via SpotHero (search "Monteverde Chicago" or 1020 W Madison). Options near 14 S Green St or 850 W Washington Blvd are ~5–6 min walk. A reserved spot removes stress with luggage on departure day.</div>
+          </details>
+        </div>
+      </div>
+
+      <div class="event travel">
+        <div class="event-body">
+          <div class="event-top">
+            <div><span class="event-icon">🚗</span><span class="event-name">Drive Home to Iowa</span></div>
+            <div class="event-time">~2:30 – 3:00 pm</div>
+          </div>
+          <div class="event-desc">~4–5 hours. Aim to leave by 3 pm latest for a comfortable arrival.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">
+    🏙️ Chicago 2026 — have an amazing trip!
+  </div>
+
+</div>
+
+<!-- Demo mode -->
+<button class="demo-fab" id="demoFab" aria-label="Demo mode">🕐</button>
+<div class="demo-panel" id="demoPanel">
+  <label>Simulate day</label>
+  <select id="demoDay">
+    <option value="fri">Fri May 29</option>
+    <option value="sat">Sat May 30</option>
+    <option value="sun" selected>Sun May 31</option>
+    <option value="mon">Mon Jun 1</option>
+    <option value="tue">Tue Jun 2</option>
+  </select>
+  <label>Time</label>
+  <div class="demo-time-display" id="demoTimeDisplay">12:00 pm</div>
+  <input type="range" id="demoSlider" min="6" max="23" step="0.25" value="12">
+  <button class="demo-off-btn" id="demoOff">Exit Demo Mode</button>
+</div>
+
+<script>
+  // ---- "Now" line indicator ----
+  const DAY_DATES = { fri: '2026-05-29', sat: '2026-05-30', sun: '2026-05-31', mon: '2026-06-01', tue: '2026-06-02' };
+
+  const EVENT_HOURS = {
+    'fri': [9, 10, 16, 18, 20],
+    'sat': [9, 12, 14, 17],
+    'sun': [11.5, 14, 15, 18],
+    'mon': [9, 12.5, 14, 17.25],
+    'tue': [8, 11, 11.25, 12.75, 15]
+  };
+
+  // Demo mode state
+  let demoMode = false;
+  let demoDayId = 'sun';
+  let demoHour = 12;
+
+  function formatHour(h) {
+    const hours = Math.floor(h);
+    const mins = Math.round((h - hours) * 60);
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    const dh = hours % 12 || 12;
+    return `${dh}:${mins.toString().padStart(2, '0')} ${ampm}`;
+  }
+
+  function placeNowMarker(scroll) {
+    document.querySelectorAll('.now-marker').forEach(m => m.remove());
+    document.querySelectorAll('.event.past-event').forEach(e => e.classList.remove('past-event'));
+    document.querySelectorAll('.event.now-active').forEach(e => e.classList.remove('now-active'));
+
+    let todayDayId, currentHour, displayTime;
+
+    if (demoMode) {
+      todayDayId = demoDayId;
+      currentHour = demoHour;
+      displayTime = formatHour(demoHour);
+    } else {
+      const now = new Date();
+      const chicagoStr = now.toLocaleString('en-US', { timeZone: 'America/Chicago' });
+      const chicago = new Date(chicagoStr);
+      const todayStr = chicago.toISOString().slice(0, 10);
+      currentHour = chicago.getHours() + chicago.getMinutes() / 60;
+      displayTime = formatHour(currentHour);
+
+      todayDayId = null;
+      for (const [id, dateStr] of Object.entries(DAY_DATES)) {
+        if (dateStr === todayStr) { todayDayId = id; break; }
+      }
+      if (!todayDayId) return;
+    }
+
+    const daySection = document.getElementById(todayDayId);
+    if (!daySection) return;
+
+    const events = [...daySection.querySelectorAll('.timeline > .event')];
+    const hours = EVENT_HOURS[todayDayId] || [];
+    const endOfDay = 23;
+
+    // Find which block we're in: the last event whose start hour <= currentHour
+    let activeIdx = -1;
+    for (let i = 0; i < events.length; i++) {
+      if (currentHour >= (hours[i] ?? 24)) {
+        activeIdx = i;
+      }
+    }
+
+    // Mark past events (all before the active one)
+    for (let i = 0; i < activeIdx; i++) {
+      events[i].classList.add('past-event');
+    }
+
+    const marker = document.createElement('div');
+    marker.className = 'now-marker';
+    const label = demoMode ? `Demo ${displayTime}` : `Now ${displayTime}`;
+    marker.innerHTML = `<div class="now-dot"></div><div class="now-line"></div><span class="now-label">${label}</span>`;
+
+    if (activeIdx >= 0) {
+      // We're inside a block — position the line as a % through the card
+      const blockStart = hours[activeIdx];
+      const blockEnd = hours[activeIdx + 1] ?? endOfDay;
+      const progress = Math.max(0, Math.min(1, (currentHour - blockStart) / (blockEnd - blockStart)));
+
+      const card = events[activeIdx];
+      card.classList.add('now-active');
+
+      const cardHeight = card.offsetHeight;
+      const yPos = progress * cardHeight;
+      marker.style.top = yPos + 'px';
+
+      card.appendChild(marker);
+    } else {
+      // Before first event — place at top of timeline
+      const timeline = daySection.querySelector('.timeline');
+      marker.style.position = 'relative';
+      marker.style.left = '0';
+      marker.style.right = '0';
+      marker.style.marginBottom = '.5rem';
+      timeline.insertBefore(marker, events[0]);
+    }
+
+    if (scroll) {
+      setTimeout(() => marker.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+    }
+  }
+
+  placeNowMarker(true);
+  setInterval(() => { if (!demoMode) placeNowMarker(false); }, 60000);
+
+  // ---- Demo controls ----
+  const fab = document.getElementById('demoFab');
+  const panel = document.getElementById('demoPanel');
+  const daySelect = document.getElementById('demoDay');
+  const slider = document.getElementById('demoSlider');
+  const timeDisplay = document.getElementById('demoTimeDisplay');
+  const offBtn = document.getElementById('demoOff');
+
+  fab.addEventListener('click', () => {
+    const opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    if (opening && !demoMode) {
+      demoMode = true;
+      fab.classList.add('active');
+      demoDayId = daySelect.value;
+      demoHour = parseFloat(slider.value);
+      placeNowMarker(true);
+    }
+  });
+
+  daySelect.addEventListener('change', () => {
+    demoDayId = daySelect.value;
+    placeNowMarker(true);
+  });
+
+  slider.addEventListener('input', () => {
+    demoHour = parseFloat(slider.value);
+    timeDisplay.textContent = formatHour(demoHour);
+    placeNowMarker(false);
+  });
+
+  offBtn.addEventListener('click', () => {
+    demoMode = false;
+    fab.classList.remove('active');
+    panel.classList.remove('open');
+    placeNowMarker(true);
+  });
+
+  // Highlight active day nav pill on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.day-nav a').forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (link) {
+          link.classList.add('active');
+          link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+  document.querySelectorAll('.day').forEach(d => observer.observe(d));
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('.day-nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
